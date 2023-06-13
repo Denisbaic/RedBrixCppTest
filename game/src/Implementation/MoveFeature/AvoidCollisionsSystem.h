@@ -1,7 +1,7 @@
 #pragma once
 #include "Contract/entt_header_wrapper.h"
 
-class AvoidCollisions
+class AvoidCollisionsSystem
 {
 public:
 	static void execute(entt::registry& world);

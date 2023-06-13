@@ -1,40 +1,42 @@
 #include "ArcherGame.h"
 
-#include "ImageManager.h"
-
-#include <iostream>
+#include <chrono>
 
 #include "TimerManager.h"
-#include "Implementation/Components/TimeComponent.h"
-#include "Implementation/Components/SpawnInfoComponent.h"
-#include "Systems/AvoidCollisions.h"
-#include "Systems/MoveSystem.h"
-#include "Systems/SpawnSystem.h"
+#include "CommonComponents/BoxInfo.h"
+#include "DamageFeature/DamageSystem.h"
+#include "MoveFeature/AvoidCollisionsSystem.h"
+#include "MoveFeature/MoveSystem.h"
+#include "RenderFeature/RenderSystem.h"
+#include "SpawnFeature/SpawnInfo.h"
+#include "SpawnFeature/SpawnSystem.h"
+#include "TeamFeature/TeamEnum.h"
+#include "WeaponFeature/WeaponSystem.h"
+
+entt::entity create_copy(entt::registry& world, entt::entity id)
+{
+	auto new_entity = world.create(id);
+
+	// create a copy of an entity component by component
+	for (auto&& curr : world.storage()) {
+		if (auto& storage = curr.second; storage.contains(id)) {
+			storage.emplace(new_entity, storage.get(id));
+
+		}
+	}
+
+	return new_entity;
+}
+
 
 void ArcherGame::PreInit(std::any const& config)
 {
 	auto RedSpawner = world_.create();
-	//world_.emplace<TimeComponent>(RedSpawner, std::chrono::milliseconds{0});
-	world_.emplace<SpawnInfoComponent>(RedSpawner, std::chrono::milliseconds{100}, 20,0, Vector3{ 10.f,0.f,10.f },RED,Team::Red);
-
+	world_.emplace<SpawnInfo>(RedSpawner, std::chrono::milliseconds{100}, 20,0, Vector3{ 10.f,0.f,10.f },RED,Team::Red);
+	
 	auto BlueSpawner = world_.create();
-	//world_.emplace<TimeComponent>(BlueSpawner, std::chrono::milliseconds{0});
-	world_.emplace<SpawnInfoComponent>(BlueSpawner, std::chrono::milliseconds{100}, 20,0, Vector3{ 40.f,0.f,40.f },BLUE, Team::Blue);
-	/*
-	for (int i = 0; i < 5; ++i)
-	{
-		auto entity = world_.create();
-		world_.emplace<TransformComponent>(entity, 10.f, 0.0f, 10.f);
-		world_.emplace<BoxComponent>(entity, Vector3{ 0,0,0 }, Vector3{ 1,1,1 }, RED);
-	}
+	world_.emplace<SpawnInfo>(BlueSpawner, std::chrono::milliseconds{100}, 20,0, Vector3{ 40.f,0.f,40.f },BLUE, Team::Blue);
 
-	for (int i = 0; i < 5; ++i)
-	{
-		auto entity = world_.create();
-		world_.emplace<TransformComponent>(entity,40.f, 0.f, 40.f);
-		world_.emplace<BoxComponent>(entity, Vector3{ 0,0,0 }, Vector3{ 1,1,1 }, BLUE);
-	}
-	*/
 }
 
 void ArcherGame::BeginPlay()
@@ -47,31 +49,14 @@ void ArcherGame::Tick(double DeltaSeconds)
 	SpawnSystem::execute(world_);
 
 	MoveSystem::execute(world_);
-	AvoidCollisions::execute(world_);
-	/*
-	auto view = world_.view<TransformComponent>();
-
-	for (auto [entity, pos] : view.each()) {
-		pos.position.z += 1.f* DeltaSeconds;
-	}
-	*/
+	AvoidCollisionsSystem::execute(world_);
+	WeaponSystem::execute(world_);
+	DamageSystem::execute(world_);
 }
 
 void ArcherGame::Render()
 {
-	BeginDrawing();
-	ClearBackground(BLACK);
-	BeginMode3D(camera_);
-
-	DrawGrid(100, 1.0f);
-
-	auto view = world_.view<TransformComponent, BoxComponent>();
-	for (auto [entity, pos, box] : view.each()) {
-		DrawCubeV(Vector3Add(pos.position, box.local_offset), box.size, box.color);
-	}
-
-	EndMode3D();
-	EndDrawing();
+	RenderSystem::execute(world_, camera_);
 }
 
 void ArcherGame::EndPlay()

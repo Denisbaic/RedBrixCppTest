@@ -1,45 +1,11 @@
 #pragma once
+#include "raylib.h"
 #include "Contract/IGame.h"
 
 #include "Contract/entt_header_wrapper.h"
 
-#include "raylib.h"
-#include "raymath.h"
 
-struct TransformComponent
-{
-	Vector3 position;
-};
-
-struct BoxComponent
-{
-	Vector3 local_offset;
-	Vector3 size;
-	Color color;
-};
-
-enum class Team
-{
-	Blue,
-	Red
-};
-
-struct ArcherComponent
-{
-	Team team;
-};
-
-struct CapsuleComponent
-{
-	Vector3 begin;
-	Vector3 end;
-	float radius;
-	int slices;
-	int rings;
-	Color color;
-};
-
-class ArcherGame : public IGame
+class ArcherGame final: public IGame
 {
 public:
 	void PreInit(std::any const& config) override;
