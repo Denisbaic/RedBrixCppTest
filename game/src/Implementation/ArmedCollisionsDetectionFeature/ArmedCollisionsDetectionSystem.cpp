@@ -24,14 +24,15 @@ void ArmedCollisionsDetectionSystem::Execute(entt::registry& world)
 			if(team_info.team!= team2_info.team && CheckCollisionBoxSphere(MathUtils::BoxComponentToBB(transform_info2.transform.translation,box_info),
 				Vector3Add(transform_info.transform.translation,sphere_info.pos),sphere_info.radius))
 			{
-				if(world.all_of<HealthInfo>(unit))
+				if(world.valid(unit) && world.all_of<HealthInfo>(unit))
 				{
 					auto damage = world.get<HealthInfo>(unit).max_health / 5.f;
 
 					auto damage_request = world.create();
 					world.emplace<DamageRequest>(damage_request, unit,damage);
 				}
-				world.destroy(entity);
+				if(world.valid(entity))
+					world.destroy(entity);
 			}
 		}
 	}
