@@ -4,5 +4,5 @@
 class EnttUtils
 {
 public:
-    static entt::entity create_copy(entt::registry& world, entt::entity id);
+    static entt::entity CreateCopy(entt::registry& world, entt::entity id);
 };

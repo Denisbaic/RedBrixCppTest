@@ -1,6 +1,4 @@
-#include "Implementation/TimerManager.h"
-
-
+#include "TimerManager.h"
 
 std::chrono::milliseconds TimerManager::GetElapsedTime() const
 {

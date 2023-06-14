@@ -5,5 +5,5 @@
 class WeaponSystem
 {
 public:
-	static void execute(entt::registry& world);
+	static void execute(entt::registry& world, float dt);
 };

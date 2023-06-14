@@ -26,7 +26,11 @@ void RenderSystem::execute(entt::registry & world, const Camera& camera)
 
 	const auto capsule_view = world.view<TransformInfo, CapsuleInfo, RenderableMarker>();
 	for (auto [entity, pos, capsule] : capsule_view.each())
-		DrawCapsule(Vector3Add(pos.transform.translation, capsule.begin), Vector3Add(pos.transform.translation, capsule.end), capsule.radius, capsule.slices, capsule.rings,capsule.color);
+	{
+		Matrix transform_matrix = MatrixMultiply(MatrixMultiply(MatrixScale(1, 1, 1), QuaternionToMatrix(pos.transform.rotation)), MatrixTranslate(pos.transform.translation.x, pos.transform.translation.y, pos.transform.translation.z));
+		DrawCapsule(Vector3Transform(capsule.begin, transform_matrix), Vector3Transform(capsule.end, transform_matrix), capsule.radius, capsule.slices, capsule.rings, capsule.color);
+	}
+	
 
 	EndMode3D();
 	EndDrawing();

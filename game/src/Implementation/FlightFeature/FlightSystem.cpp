@@ -3,13 +3,41 @@
 #include <chrono>
 
 #include "FlightInfo.h"
-#include "Implementation/TimerManager.h"
+#include "Implementation/Utils/TimerManager.h"
 #include "Implementation/CommonComponents/BoxInfo.h"
 #include "Implementation/CommonComponents/SphereInfo.h"
 #include "Implementation/MoveFeature/TransformInfo.h"
 #include "Implementation/TeamFeature/TeamInfo.h"
 
 #include "raymath.h"
+
+/** Calculates the percentage along a line from MinValue to MaxValue that Value is. */
+
+static auto GetRangePct(float MinValue, float MaxValue, float Value)
+{
+	// Avoid Divide by Zero.
+	// But also if our range is a point, output whether Value is before or after.
+	const float Divisor = MaxValue - MinValue;
+
+	if (FloatEquals(Divisor, 0.f))
+	{
+		return (Value >= MaxValue) ? 1.f : 0.f;
+	}
+
+	return (Value - MinValue) / Divisor;
+}
+
+/** Basically a Vector2d version of Lerp. */
+static auto GetRangeValue(std::pair<float, float> const& Range, float Pct)
+{
+	return Lerp(Range.first, Range.second, Pct);
+}
+
+static auto GetMappedRangeValueClamped(const std::pair<float, float>& InputRange, const std::pair<float, float>& OutputRange, const float Value)
+{
+	const float ClampedPct = Clamp(GetRangePct(InputRange.first, InputRange.second, Value), 0.f, 1.f);
+	return GetRangeValue(OutputRange, ClampedPct);
+}
 
 extern BoundingBox BoxComponentToBB(Vector3 pos, BoxInfo const& box_component);
 
@@ -42,7 +70,7 @@ void FlightSystem::execute(entt::registry& world)
 			continue;
 		}
 
-		flight_info.t += std::chrono::duration<float>(TimerManager::instance().MS_PER_UPDATE).count();
+		flight_info.t += GetMappedRangeValueClamped({ 0.f,flight_info.total_time }, {0.f,1.f},std::chrono::duration<float>(TimerManager::instance().MS_PER_UPDATE).count());
 
 		pos.transform.translation = QuadBezier(flight_info.P0, flight_info.P1, flight_info.P2, flight_info.t);
 

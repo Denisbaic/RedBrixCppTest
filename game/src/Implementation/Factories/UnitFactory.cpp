@@ -8,6 +8,7 @@
 #include "Implementation/SpawnFeature/UnitMarker.h"
 
 #include "raymath.h"
+#include "Implementation/WeaponFeature/HasWeaponInfo.h"
 
 entt::entity UnitFactory::Create(entt::registry& world, Vector3 pos, Team team, Color team_color)
 {
@@ -22,4 +23,9 @@ entt::entity UnitFactory::Create(entt::registry& world, Vector3 pos, Team team, 
 	world.emplace<MoveableMarker>(new_entity);
 
 	return new_entity;
+}
+
+void UnitFactory::AssignWeapon(entt::registry& world, entt::entity id,entt::entity weapon)
+{
+	world.emplace_or_replace<HasWeaponInfo>(id, weapon);
 }

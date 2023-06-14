@@ -14,7 +14,7 @@ public:
 	void Render() override;
 
 protected:
-	Camera camera_ = { { 0.0f, 80.0f, 80.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0f, 0 };
+	Camera camera_ = { { -40.0f, 40, 80 }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0f, CAMERA_ORTHOGRAPHIC };
 
 	entt::registry world_;
 

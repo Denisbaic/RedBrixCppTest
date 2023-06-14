@@ -1,6 +1,6 @@
 #include "EnttUtils.h"
 
-entt::entity EnttUtils::create_copy(entt::registry& world, entt::entity id)
+entt::entity EnttUtils::CreateCopy(entt::registry& world, entt::entity id)
 {
 	const auto new_entity = world.create(id);
 
