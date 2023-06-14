@@ -8,6 +8,7 @@
 #include "Implementation/TeamFeature/TeamInfo.h"
 #include "Implementation/Factories/ArrowFactory.h"
 #include "Implementation/ReloadingFeature/ReloadingMarker.h"
+#include "Implementation/ReloadingFeature/ReloadingRequest.h"
 
 
 void ShootSystem::execute(entt::registry& world)
@@ -16,7 +17,8 @@ void ShootSystem::execute(entt::registry& world)
 
 	for (auto [entity,shoot_request] : shoot_requests.each())
 	{
-		if (shoot_request.weapon != entt::null && shoot_request.target != entt::null)
+		if (shoot_request.weapon != entt::null && shoot_request.target != entt::null && 
+			!world.all_of<ReloadingMarker>(shoot_request.weapon))
 		{
 			auto&& [owner_team,pos_info] = world.get<TeamInfo,TransformInfo>(shoot_request.owner);
 			auto& target_pos_info = world.get<TransformInfo>(shoot_request.target);
@@ -25,8 +27,8 @@ void ShootSystem::execute(entt::registry& world)
 
 			ArrowFactory::Assign(world, projectile_instance, pos_info.transform.translation, target_pos_info.transform.translation, 5.f, 2.f,owner_team.team);
 
-			//TODO add request
-			world.emplace_or_replace<ReloadingMarker>(shoot_request.weapon);
+			auto reloading_request = world.create();
+			world.emplace_or_replace<ReloadingRequest>(reloading_request, shoot_request.weapon);
 		}
 		world.destroy(entity);
 	}

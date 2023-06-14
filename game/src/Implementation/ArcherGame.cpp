@@ -10,6 +10,7 @@
 #include "FlightFeature/FlightSystem.h"
 #include "MoveFeature/AvoidCollisionsSystem.h"
 #include "MoveFeature/MoveSystem.h"
+#include "ReloadingFeature/ReloadingSystem.h"
 #include "RenderFeature/RenderSystem.h"
 #include "ShootSystem/ShootSystem.h"
 #include "SpawnFeature/SpawnInfo.h"
@@ -46,6 +47,7 @@ void ArcherGame::Tick(double DeltaSeconds)
 	AvoidCollisionsSystem::execute(world_);
 	WeaponSystem::execute(world_,DeltaSeconds);
 	ShootSystem::execute(world_);
+	ReloadingSystem::execute(world_,DeltaSeconds);
 	FlightSystem::execute(world_);
 	DamageSystem::execute(world_);
 }

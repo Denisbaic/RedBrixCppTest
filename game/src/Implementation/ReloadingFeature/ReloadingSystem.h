@@ -5,5 +5,5 @@
 class ReloadingSystem
 {
 public:
-	static void execute(entt::registry& world);
+	static void execute(entt::registry& world, float DeltaSeconds);
 };
