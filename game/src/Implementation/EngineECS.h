@@ -4,8 +4,6 @@
 #include <unordered_map>
 
 #include "Contract/IEngine.h"
-
-
 #include "Contract/IGame.h"
 
 struct EngineECS_Config
