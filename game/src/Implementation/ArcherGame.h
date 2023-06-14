@@ -2,7 +2,7 @@
 #include "raylib.h"
 #include "Contract/IGame.h"
 
-#include "Contract/entt_header_wrapper.h"
+#include "..\Contract\EnttHeaderWeapper.h"
 
 
 class ArcherGame final: public IGame

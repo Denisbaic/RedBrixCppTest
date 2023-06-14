@@ -1,8 +1,8 @@
 #pragma once
-#include "Contract/entt_header_wrapper.h"
+#include "Contract\EnttHeaderWeapper.h"
 
 class ArmedCollisionsDetectionSystem
 {
 public:
-	static void execute(entt::registry& world);
+	static void Execute(entt::registry& world);
 };

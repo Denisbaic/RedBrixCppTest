@@ -29,6 +29,7 @@ void EngineECS::GameLoop()
     {
         RunFrame();
     }
+    EndPlay();
 }
 
 void EngineECS::RunFrame()

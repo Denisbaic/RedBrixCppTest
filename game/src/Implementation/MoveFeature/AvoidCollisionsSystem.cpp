@@ -4,56 +4,23 @@
 #include "Implementation/SpawnFeature/UnitMarker.h"
 #include "Implementation/ArcherGame.h"
 #include "Implementation/CommonComponents/BoxInfo.h"
+#include "Implementation/Utils/MathUtils.h"
 
 #include "raymath.h"
 
-
-Vector3 InterpConstantTo(Vector3 const& Current, Vector3 const& Target, float DeltaTime, float InterpSpeed)
+void AvoidCollisionsSystem::Execute(entt::registry& world)
 {
-	const Vector3 Delta = Vector3Subtract(Target, Current);
-	const float DeltaM = Vector3Length(Delta);
-	const float MaxStep = InterpSpeed * DeltaTime;
+	const auto units = world.view<TransformInfo, BoxInfo, UnitMarker>();
 
-	if (DeltaM > MaxStep)
+	for (auto& [entity, transform, box] : units.each())
 	{
-		if (MaxStep > 0.f)
+		for (auto& [entity2, transform2, box2] : units.each())
 		{
-			const Vector3 DeltaN = { Delta.x / DeltaM,Delta.y / DeltaM,Delta.z / DeltaM };
-			return Vector3Add(Current, { DeltaN.x * MaxStep, DeltaN.y * MaxStep, DeltaN.z * MaxStep });
-		}
-		return Current;
-	}
-
-	return Target;
-}
-
-BoundingBox BoxComponentToBB(Vector3 pos,BoxInfo const& box_component)
-{
-	const BoundingBox bb = { { pos.x - box_component.size.x / 2,
-									 pos.y - box_component.size.y / 2,
-									 pos.z - box_component.size.z / 2 },
-		{
-		pos.x + box_component.size.x / 2,
-			pos.y + box_component.size.y / 2,
-			pos.z + box_component.size.z / 2
-	} };
-
-	return bb;
-}
-
-void AvoidCollisionsSystem::execute(entt::registry& world)
-{
-	const auto view = world.view<TransformInfo, BoxInfo, UnitMarker>();
-
-	for (auto& [entity, transform, box] : view.each())
-	{
-		for (auto& [entity2, transform2, box2] : view.each())
-		{
-			if(entity != entity2 && CheckCollisionBoxes(BoxComponentToBB(transform.transform.translation,box), BoxComponentToBB(transform2.transform.translation, box2)))
+			if(entity != entity2 && CheckCollisionBoxes(MathUtils::BoxComponentToBB(transform.transform.translation,box), MathUtils::BoxComponentToBB(transform2.transform.translation, box2)))
 			{
-				auto c1 = Vector3Add(BoxComponentToBB(transform.transform.translation, box).min, BoxComponentToBB(transform.transform.translation, box).max);
+				auto c1 = Vector3Add(MathUtils::BoxComponentToBB(transform.transform.translation, box).min, MathUtils::BoxComponentToBB(transform.transform.translation, box).max);
 				c1 = { c1.x / 2.f,c1.y / 2.f, c1.z / 2.f };
-				auto c2 = Vector3Add(BoxComponentToBB(transform2.transform.translation, box2).min, BoxComponentToBB(transform2.transform.translation, box2).max);
+				auto c2 = Vector3Add(MathUtils::BoxComponentToBB(transform2.transform.translation, box2).min, MathUtils::BoxComponentToBB(transform2.transform.translation, box2).max);
 				c2 = { c2.x / 2.f,c2.y / 2.f, c2.z / 2.f };
 				if (Vector3Equals(c1,c2))
 				{

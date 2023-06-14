@@ -2,11 +2,12 @@
 
 #include "DamageRequest.h"
 #include "HealthInfo.h"
+
 #include "raymath.h"
 
-void DamageSystem::execute(entt::registry& world)
+void DamageSystem::Execute(entt::registry& world)
 {
-	auto damage_requests = world.view<DamageRequest>();
+	const auto damage_requests = world.view<DamageRequest>();
 	for (auto& [entity, damage_request] : damage_requests.each())
 	{
 		if (world.valid(damage_request.target) && world.all_of<HealthInfo>(damage_request.target))

@@ -11,11 +11,11 @@ void ReloadingSystem::execute(entt::registry & world,float DeltaSeconds)
 
 	for (auto& [entity,weapon_info,timer_info] : weapons_on_reloading.each())
 	{
-		timer_info.T += DeltaSeconds;
-		if (weapon_info.attack_delay<= timer_info.T)
+		timer_info.t += DeltaSeconds;
+		if (weapon_info.attack_delay<= timer_info.t)
 		{
 			world.erase<ReloadingMarker>(entity);
-			timer_info.T = 0.f;
+			timer_info.t = 0.f;
 		}
 	}
 

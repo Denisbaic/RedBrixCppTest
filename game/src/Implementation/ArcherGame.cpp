@@ -8,7 +8,6 @@
 #include "CommonComponents/SphereInfo.h"
 #include "DamageFeature/DamageSystem.h"
 #include "DeathFeature/DeathSystem.h"
-#include "Factories/ArrowFactory.h"
 #include "FlightFeature/FlightSystem.h"
 #include "MoveFeature/AvoidCollisionsSystem.h"
 #include "MoveFeature/MoveSystem.h"
@@ -44,14 +43,13 @@ void ArcherGame::BeginPlay()
 void ArcherGame::Tick(double DeltaSeconds)
 {
 	SpawnSystem::execute(world_);
-
-	MoveSystem::execute(world_);
-	AvoidCollisionsSystem::execute(world_);
+	MoveSystem::Execute(world_);
+	AvoidCollisionsSystem::Execute(world_);
 	WeaponSystem::execute(world_,DeltaSeconds);
 	ShootSystem::execute(world_);
 	ReloadingSystem::execute(world_,DeltaSeconds);
-	ArmedCollisionsDetectionSystem::execute(world_);
-	DamageSystem::execute(world_);
+	ArmedCollisionsDetectionSystem::Execute(world_);
+	DamageSystem::Execute(world_);
 	FlightSystem::execute(world_);
 	DeathSystem::execute(world_);
 }
@@ -63,5 +61,5 @@ void ArcherGame::Render()
 
 void ArcherGame::EndPlay()
 {
-	world_.clear<>();
+	world_.clear();
 }

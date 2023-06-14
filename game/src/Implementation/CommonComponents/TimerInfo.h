@@ -2,5 +2,5 @@
 
 struct TimerInfo
 {
-	float T = 0.f;
+	float t = 0.f;
 };
