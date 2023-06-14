@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Contract\EnttHeaderWeapper.h"
+#include "Contract/EnttHeaderWeapper.h"
 
 class DeathSystem
 {
 public:
-    static void execute(entt::registry& world);
+    static void Execute(entt::registry& world);
 };

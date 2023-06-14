@@ -1,7 +1,7 @@
 #pragma once
-#include "Contract\EnttHeaderWeapper.h"
+#include "Contract/EnttHeaderWeapper.h"
 
 struct ReloadingRequest
 {
-	entt::entity weapon;
+	entt::entity weapon = entt::null;
 };

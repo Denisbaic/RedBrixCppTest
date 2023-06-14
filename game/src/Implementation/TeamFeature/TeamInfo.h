@@ -1,7 +1,7 @@
 #pragma once
-#include "TeamEnum.h"
+#include "ETeam.h"
 
 struct TeamInfo
 {
-	Team team;
+	ETeam team;
 };

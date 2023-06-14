@@ -16,7 +16,7 @@
 #include "ShootSystem/ShootSystem.h"
 #include "SpawnFeature/SpawnInfo.h"
 #include "SpawnFeature/SpawnSystem.h"
-#include "TeamFeature/TeamEnum.h"
+#include "TeamFeature/ETeam.h"
 #include "Utils/TimerManager.h"
 #include "WeaponFeature/WeaponSystem.h"
 
@@ -29,10 +29,10 @@ void ArcherGame::PreInit(std::any const& config)
 	world_.emplace<SphereInfo>(arrow_prototype, Vector3{ 0,0.f,0 }, 0.2f, GRAY);
 
 	auto RedSpawner = world_.create();
-	world_.emplace<SpawnInfo>(RedSpawner, std::chrono::milliseconds{100}, 20,0, Vector3{ -20.f,0.f,-20.f },RED,Team::Red);
+	world_.emplace<SpawnInfo>(RedSpawner, std::chrono::milliseconds{100}, 20,0, Vector3{ -20.f,0.f,-20.f },RED,ETeam::Red);
 	
 	auto BlueSpawner = world_.create();
-	world_.emplace<SpawnInfo>(BlueSpawner, std::chrono::milliseconds{100}, 20,0, Vector3{ 20.f,0.f,20.f },BLUE, Team::Blue);
+	world_.emplace<SpawnInfo>(BlueSpawner, std::chrono::milliseconds{100}, 20,0, Vector3{ 20.f,0.f,20.f },BLUE, ETeam::Blue);
 }
 
 void ArcherGame::BeginPlay()
@@ -40,23 +40,23 @@ void ArcherGame::BeginPlay()
 	TimerManager::instance().Restart();
 }
 
-void ArcherGame::Tick(double DeltaSeconds)
+void ArcherGame::Tick(double dt)
 {
-	SpawnSystem::execute(world_);
+	SpawnSystem::Execute(world_);
 	MoveSystem::Execute(world_);
 	AvoidCollisionsSystem::Execute(world_);
-	WeaponSystem::execute(world_,DeltaSeconds);
-	ShootSystem::execute(world_);
-	ReloadingSystem::execute(world_,DeltaSeconds);
+	WeaponSystem::Execute(world_);
+	ShootSystem::Execute(world_);
+	ReloadingSystem::Execute(world_,static_cast<float>(dt));
 	ArmedCollisionsDetectionSystem::Execute(world_);
 	DamageSystem::Execute(world_);
 	FlightSystem::execute(world_);
-	DeathSystem::execute(world_);
+	DeathSystem::Execute(world_);
 }
 
 void ArcherGame::Render()
 {
-	RenderSystem::execute(world_, camera_);
+	RenderSystem::Execute(world_, camera_);
 }
 
 void ArcherGame::EndPlay()

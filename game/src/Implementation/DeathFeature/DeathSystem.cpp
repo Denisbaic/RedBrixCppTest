@@ -5,9 +5,9 @@
 
 #include "raymath.h"
 
-void DeathSystem::execute(entt::registry& world)
+void DeathSystem::Execute(entt::registry& world)
 {
-	auto view = world.view<HealthInfo>();
+	const auto view = world.view<HealthInfo>();
 
 	for (auto& [entity,health] : view.each())
 	{

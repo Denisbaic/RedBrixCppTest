@@ -2,23 +2,23 @@
 
 #include "raymath.h"
 
-Vector3 MathUtils::InterpConstantTo(Vector3 const& Current, Vector3 const& Target, float DeltaTime, float InterpSpeed)
+Vector3 MathUtils::InterpConstantTo(Vector3 const& current, Vector3 const& target, float dt, float interp_speed)
 {
-	const Vector3 Delta = Vector3Subtract(Target, Current);
-	const float DeltaM = Vector3Length(Delta);
-	const float MaxStep = InterpSpeed * DeltaTime;
+	const Vector3 delta = Vector3Subtract(target, current);
+	const float delta_m = Vector3Length(delta);
+	const float max_step = interp_speed * dt;
 
-	if (DeltaM > MaxStep)
+	if (delta_m > max_step)
 	{
-		if (MaxStep > 0.f)
+		if (max_step > 0.f)
 		{
-			const Vector3 DeltaN = { Delta.x / DeltaM,Delta.y / DeltaM,Delta.z / DeltaM };
-			return Vector3Add(Current, { DeltaN.x * MaxStep, DeltaN.y * MaxStep, DeltaN.z * MaxStep });
+			const Vector3 delta_n = { delta.x / delta_m,delta.y / delta_m,delta.z / delta_m };
+			return Vector3Add(current, { delta_n.x * max_step, delta_n.y * max_step, delta_n.z * max_step });
 		}
-		return Current;
+		return current;
 	}
 
-	return Target;
+	return target;
 }
 
 BoundingBox MathUtils::BoxComponentToBB(Vector3 pos, BoxInfo const& box_component)

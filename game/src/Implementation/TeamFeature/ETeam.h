@@ -1,7 +1,8 @@
 #pragma once
 
-enum class Team
+enum class ETeam
 {
+	Neutral,
 	Blue,
 	Red
 };

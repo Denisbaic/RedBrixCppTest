@@ -12,7 +12,7 @@
 #include "Implementation/TeamFeature/TeamInfo.h"
 
 
-entt::entity ArrowFactory::Create(entt::registry& world, Vector3 P0, Vector3 P1, Vector3 P2,float flight_time, Team team)
+entt::entity ArrowFactory::Create(entt::registry& world, Vector3 P0, Vector3 P1, Vector3 P2,float flight_time, ETeam team)
 {
 	const auto new_entity = world.create();
 
@@ -22,7 +22,7 @@ entt::entity ArrowFactory::Create(entt::registry& world, Vector3 P0, Vector3 P1,
 }
 
 entt::entity ArrowFactory::Create(entt::registry& world, Vector3 begin, Vector3 end, float flight_height, float flight_time,
-	Team team)
+	ETeam team)
 {
 	Vector3 P1 = Vector3SubtractValue(Vector3Add(begin, end), 2.f);
 	P1.y = begin.y + flight_height;
@@ -31,7 +31,7 @@ entt::entity ArrowFactory::Create(entt::registry& world, Vector3 begin, Vector3 
 }
 
 void ArrowFactory::Assign(entt::registry& world, entt::entity entity_id, Vector3 P0, Vector3 P1, Vector3 P2,
-	float flight_time, Team team)
+	float flight_time, ETeam team)
 {
 	std::ignore = world.get_or_emplace<CapsuleInfo>(entity_id, Vector3{ 0,0.5,0 }, Vector3{ 0,-0.5,0 }, 0.5f, 8, 8, BROWN);
 	std::ignore = world.get_or_emplace<SphereInfo>(entity_id, Vector3{ 0,0.5,0 }, 0.6f, GRAY);
@@ -45,7 +45,7 @@ void ArrowFactory::Assign(entt::registry& world, entt::entity entity_id, Vector3
 }
 
 void ArrowFactory::Assign(entt::registry& world, entt::entity entity_id, Vector3 begin, Vector3 end,
-                          float flight_height, float flight_time, Team team)
+                          float flight_height, float flight_time, ETeam team)
 {
 	Vector3 P1 = Vector3SubtractValue(Vector3Add(begin, end), 2.f);
 	P1.y = begin.y + flight_height;

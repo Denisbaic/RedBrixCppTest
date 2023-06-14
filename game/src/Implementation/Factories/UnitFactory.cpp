@@ -11,7 +11,7 @@
 
 #include "raymath.h"
 
-entt::entity UnitFactory::Create(entt::registry& world, Vector3 pos, Team team, Color team_color)
+entt::entity UnitFactory::Create(entt::registry& world, Vector3 pos, ETeam team, Color team_color)
 {
 	const auto new_entity = world.create();
 

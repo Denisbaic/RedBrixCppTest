@@ -10,7 +10,7 @@ class ArcherGame final: public IGame
 public:
 	void PreInit(std::any const& config) override;
 	void BeginPlay() override;
-	void Tick(double DeltaSeconds) override;
+	void Tick(double dt) override;
 	void Render() override;
 
 protected:

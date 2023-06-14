@@ -2,7 +2,7 @@
 #include <chrono>
 
 #include "raylib.h"
-#include "Implementation/TeamFeature/TeamEnum.h"
+#include "Implementation/TeamFeature/ETeam.h"
 
 struct SpawnInfo
 {	
@@ -11,6 +11,6 @@ struct SpawnInfo
 	int spawned = 0;
 	Vector3 pos{};
 	Color team_color{};
-	Team team;
+	ETeam team = ETeam::Neutral;
 };
 

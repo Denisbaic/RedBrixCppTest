@@ -5,13 +5,13 @@
 #include "Implementation/CommonComponents/TimerInfo.h"
 #include "Implementation/WeaponFeature/WeaponInfo.h"
 
-void ReloadingSystem::execute(entt::registry & world,float DeltaSeconds)
+void ReloadingSystem::Execute(entt::registry & world,float dt)
 {
-	auto weapons_on_reloading = world.view<WeaponInfo,TimerInfo, ReloadingMarker>();
+	const auto weapons_on_reloading = world.view<WeaponInfo,TimerInfo, ReloadingMarker>();
 
 	for (auto& [entity,weapon_info,timer_info] : weapons_on_reloading.each())
 	{
-		timer_info.t += DeltaSeconds;
+		timer_info.t += dt;
 		if (weapon_info.attack_delay<= timer_info.t)
 		{
 			world.erase<ReloadingMarker>(entity);
@@ -19,7 +19,7 @@ void ReloadingSystem::execute(entt::registry & world,float DeltaSeconds)
 		}
 	}
 
-    auto reloading_requests = world.view<ReloadingRequest>();
+	const auto reloading_requests = world.view<ReloadingRequest>();
     for (auto& [entity,reloading_request]: reloading_requests.each())
     {
 	    if (world.valid(reloading_request.weapon))
