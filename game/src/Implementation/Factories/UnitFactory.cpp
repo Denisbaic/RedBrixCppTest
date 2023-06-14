@@ -8,6 +8,7 @@
 #include "Implementation/SpawnFeature/UnitMarker.h"
 
 #include "raymath.h"
+#include "Implementation/DamageFeature/HealthInfo.h"
 #include "Implementation/WeaponFeature/HasWeaponInfo.h"
 
 entt::entity UnitFactory::Create(entt::registry& world, Vector3 pos, Team team, Color team_color)
@@ -15,8 +16,9 @@ entt::entity UnitFactory::Create(entt::registry& world, Vector3 pos, Team team, 
 	const auto new_entity = world.create();
 
 	world.emplace<TransformInfo>(new_entity, entt::null, Transform{ pos,QuaternionFromEuler(0,0,0),{1,1,1} });
-	world.emplace<BoxInfo>(new_entity, Vector3{ 0,0,0 }, Vector3{ 1,1,1 }, team_color);
+	world.emplace<BoxInfo>(new_entity, Vector3{ 0,0,0 }, Vector3{ 0.25f,1.7f,0.25f }, team_color);
 	world.emplace<TeamInfo>(new_entity, team);
+	world.emplace<HealthInfo>(new_entity, 10.f, 10.f);
 
 	world.emplace<UnitMarker>(new_entity);
 	world.emplace<RenderableMarker>(new_entity);

@@ -60,8 +60,6 @@ void FlightSystem::execute(entt::registry& world)
 {
 	auto view = world.view<TransformInfo, FlightInfo, TeamInfo,SphereInfo>();
 
-	//auto view_units = world.view<TransformInfo,BoxInfo, TeamInfo,UnitMarker>();
-
 	for (auto& [entity, pos,flight_info,team_info,sphere_info] : view.each())
 	{
 		if(flight_info.t >=1.f)
@@ -77,15 +75,5 @@ void FlightSystem::execute(entt::registry& world)
 		const auto Q = LinearBezier(flight_info.P1, flight_info.P2, flight_info.t);
 		pos.transform.rotation = QuaternionFromMatrix(MatrixLookAt(pos.transform.translation, Q, { 0,1,0 }));
 
-		/*
-		 for (auto& [entity2,pos2,box_info, team_info]:view_units.each())
-		{
-			if(team.team != team_info.team && CheckCollisionBoxSphere(BoxComponentToBB(pos2.transform.translation,box_info), sphere.pos, sphere.radius))
-			{
-				health.current_health -= 1.f;
-				world.destroy(entity);
-			}
-		}
-		*/
 	}
 }

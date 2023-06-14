@@ -3,6 +3,7 @@
 #include "Implementation/MoveFeature/TransformInfo.h"
 
 #include "raymath.h"
+#include "Implementation/ArmedCollisionsDetectionFeature/ArmedMarker.h"
 #include "Implementation/CommonComponents/CapsuleInfo.h"
 #include "Implementation/CommonComponents/SphereInfo.h"
 #include "Implementation/CommonComponents/TimerInfo.h"
@@ -17,15 +18,6 @@ entt::entity ArrowFactory::Create(entt::registry& world, Vector3 P0, Vector3 P1,
 
 	Assign(world, new_entity, P0, P1, P2, flight_time, team);
 
-	/*
-	world.emplace<CapsuleInfo>(new_entity, Vector3{ 0,0.5,0 }, Vector3{ 0,-0.5,0 }, 0.5f, 8, 8, BROWN);
-	world.emplace<SphereInfo>(new_entity, Vector3{ 0,0.5,0 }, 0.6f, GRAY);
-
-	world.emplace<TransformInfo>(new_entity, entt::null, Transform{ P0,QuaternionFromEuler(0,0,0),{1,1,1} });
-	world.emplace<FlightInfo>(new_entity, P0, P1, P2, flight_time);
-	world.emplace<TeamInfo>(new_entity, team);
-	world.emplace<TimerInfo>(new_entity, 0.f);
-	*/
 	return new_entity;
 }
 
@@ -48,6 +40,7 @@ void ArrowFactory::Assign(entt::registry& world, entt::entity entity_id, Vector3
 	world.emplace_or_replace<FlightInfo>(entity_id, P0, P1, P2, flight_time);
 	world.emplace_or_replace<TeamInfo>(entity_id, team);
 	world.emplace_or_replace<TimerInfo>(entity_id, 0.f);
+	world.emplace_or_replace<ArmedMarker>(entity_id);
 	world.emplace_or_replace<RenderableMarker>(entity_id);
 }
 

@@ -1,9 +1,9 @@
 #pragma once
+
 #include "Contract/entt_header_wrapper.h"
 
-class DamageSystem
+class DeathSystem
 {
 public:
-	static void execute(entt::registry& world);
+    static void execute(entt::registry& world);
 };
-
