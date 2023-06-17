@@ -1,7 +1,7 @@
 
 This repository contains an implementation of a small archer combat simulation using the ECS architectural pattern.
 
-![2023-06-14 12-58-02](https://github.com/Denisbaic/RedBrixCppTest/assets/13454427/f874fc17-1e5d-45a1-a579-ad3160d9dd08)
+![2023-06-14 12-58-02](https://github.com/Denisbaic/RedBrixCppTest/assets/13454427/2c56b4a8-78e5-4bb7-92b2-c55fb8d0a3d4)
 
 # Raylib Setup using Premake5
 This is a simplified set of instructions for how to setup a project using premake.
